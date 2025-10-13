@@ -1,11 +1,11 @@
-const fs = require("fs-extra");
+ const fs = require("fs-extra");
 const { utils } = global;
 
 module.exports = {
 	config: {
 		name: "prefix",
 		version: "1.4",
-		author: "NTKhang",
+		author: "Joy",
 		countDown: 5,
 		role: 0,
 		description: "Thay đổi dấu lệnh của bot trong box chat của bạn hoặc cả hệ thống bot (chỉ admin bot)",
@@ -45,7 +45,7 @@ module.exports = {
 			confirmThisThread: "Please react to this message to confirm change prefix in your box chat",
 			successGlobal: "Changed prefix of system bot to: %1",
 			successThisThread: "Changed prefix in your box chat to: %1",
-			myPrefix: "🌐 System prefix: %1\n🛸 Your box chat prefix: %2"
+			myPrefix: "┏━━ [ 𝐉𝐎𝐘-𝐁𝐎𝐓 ]━━➣\n┃🔐 𝗦𝘆𝘀𝘁𝗲𝗺 𝗽𝗿𝗲𝗳𝗶𝘅: [ %1 ]\n┃🔐 𝗬𝗼𝘂𝗿 𝗯𝗼𝘅 𝗰𝗵𝗮𝘁 𝗽𝗿𝗲𝗳𝗶𝘅: [ %2 ]\n┗━━━━━━━━━━━━➢"
 		}
 	},
 
@@ -94,10 +94,16 @@ module.exports = {
 		}
 	},
 
-	onChat: async function ({ event, message, getLang }) {
-		if (event.body && event.body.toLowerCase() === "prefix")
-			return () => {
-				return message.reply(getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)));
-			};
-	}
-};
+  onChat: async function ({ event, message, usersData, getLang }) {
+    const data = await usersData.get(event.senderID);
+    const name = data.name;
+    const xyrene = {
+      body: getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)),
+      attachment: await global.utils.getStreamFromURL("https://graph.facebook.com/100001435123762/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662")
+        };
+    if (event.body && event.body.toLowerCase() === "prefix")
+      return () => {
+        return message.reply(xyrene);
+      };
+  }
+  };
